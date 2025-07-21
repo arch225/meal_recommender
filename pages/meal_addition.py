@@ -14,4 +14,17 @@ def select_meal(meal):
 
 meal_sel=st.selectbox("Select a meal", ["Breakfast", "Lunch", "Dinner"])
 
-st.dataframe(select_meal(meal_sel))
+edited_df = st.data_editor(select_meal(meal_sel), num_rows="dynamic", use_container_width=True)
+if meal_sel == "Breakfast":
+     with pd.ExcelWriter('data/food_options.xlsx', mode='a', if_sheet_exists='replace') as writer:
+        edited_df.to_excel(writer, sheet_name='breakfast', index=False)
+elif meal_sel == "Lunch":
+     with pd.ExcelWriter('data/food_options.xlsx', mode='a', if_sheet_exists='replace') as writer:
+        edited_df.to_excel(writer, sheet_name='lunch', index=False)
+elif meal_sel == "Dinner":
+    with pd.ExcelWriter('data/food_options.xlsx', mode='a', if_sheet_exists='replace') as writer:
+        edited_df.to_excel(writer, sheet_name='dinner', index=False)
+
+
+# Show edited result
+st.subheader("Updated DataFrame:")
